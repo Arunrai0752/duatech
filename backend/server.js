@@ -1,58 +1,55 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config(); // यह आपकी .env फाइल से पासवर्ड पढ़ेगा
 
 const app = express();
 
-// --- 1. MIDDLEWARE ---
-// यह लाइन सबसे ज़रूरी है, इसके बिना वेबसाइट पर डेटा "Block" हो जाता है
-app.use(cors()); 
+// --- 1. SETTINGS ---
+app.use(cors());
 app.use(express.json());
 
-// --- 2. MONGOOSE CONNECTION ---
-// यहाँ हम MongoDB Cluster से जुड़ रहे हैं
-mongoose.connect(process.env.MONGODB_URI || 'आपका_MONGO_URL_यहाँ_डालें')
-  .then(() => console.log('✅ Connected to MongoDB Cluster'))
-  .catch(err => console.error('❌ MongoDB Connection Error:', err));
+// --- 2. DATABASE CONNECTION (As per your image) ---
+// Username: cergibwale_db_user
+// Password: Vl49xx5IhqolvEF4
+const mongoURI = "mongodb+srv://cergibwale_db_user:Vl49xx5IhqolvEF4@cluster0.ogg6awx.mongodb.net/Duatech_solar_leads?retryWrites=true&w=majority&appName=Cluster0";
 
-// --- 3. LEAD MODEL ---
-// यह बताता है कि डेटाबेस में क्या-क्या स्टोर है
-const leadSchema = new mongoose.Schema({
+mongoose.connect(mongoURI)
+  .then(() => console.log('✅ Connected to MongoDB: Duatech_solar_leads'))
+  .catch(err => console.error('❌ Connection Error:', err));
+
+// --- 3. DATA STRUCTURE (Schema) ---
+const LeadSchema = new mongoose.Schema({
   name: String,
   mobile: String,
   address: String,
-  type: String, // Residential, Commercial, etc.
   createdAt: { type: Date, default: Date.now }
 });
 
-const Lead = mongoose.model('Lead', leadSchema);
+const Lead = mongoose.model('leads', LeadSchema);
 
 // --- 4. API ROUTES ---
 
-// यह रूट वेबसाइट (Frontend) को डेटा भेजेगा
+// Admin Dashboard के लिए डेटा भेजना
 app.get('/api/leads', async (req, res) => {
   try {
-    const leads = await Lead.find().sort({ createdAt: -1 }); // नया डेटा पहले दिखेगा
-    res.status(200).json(leads);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching leads", error });
+    const data = await Lead.find().sort({ createdAt: -1 });
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
-// यह रूट नया डेटा सेव करने के लिए है (जब कोई फॉर्म भरेगा)
+// वेबसाइट से नया डेटा जमा करना
 app.post('/api/leads', async (req, res) => {
   try {
-    const newLead = new Lead(req.body);
-    await newLead.save();
-    res.status(201).json({ message: "Lead saved successfully!" });
-  } catch (error) {
-    res.status(400).json({ message: "Error saving lead", error });
+    const newEntry = new Lead(req.body);
+    await newEntry.save();
+    res.status(201).json({ message: "Lead Captured!" });
+  } catch (err) {
+    res.status(400).json({ error: "Failed to save" });
   }
 });
 
-// --- 5. SERVER START ---
+// --- 5. RUN SERVER ---
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Server ready on port ${PORT}`));
