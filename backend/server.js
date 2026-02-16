@@ -1,57 +1,68 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const app = express();
-
-// --- 1. MIDDLEWARE (वेबसाइट और सर्वर को जोड़ने के लिए) ---
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
-// --- 2. MONGODB CONNECTION (आपकी फोटो वाला असली लिंक) ---
-// इसमें आपका यूजरनेम, पासवर्ड और डेटाबेस नाम सब सही सलामत डाल दिया है
-const mongoURI = "mongodb+srv://cergibwale_db_user:Vl49xx5IhqolvEF4@cluster0.ogg6awx.mongodb.net/Duatech_solar_leads?retryWrites=true&w=majority&appName=Cluster0";
+// 1. DATABASE CONNECTION
+// पक्का करें कि आपने .env फाइल में MONGO_URI डाला है
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/duvatech_solar')
+  .then(() => console.log("✅ MongoDB Connected Successfully"))
+  .catch(err => console.log("❌ DB Connection Error:", err));
 
-mongoose.connect(mongoURI)
-  .then(() => console.log('✅ MongoDB Connected Successfully!'))
-  .catch(err => console.error('❌ MongoDB Connection Error:', err));
-
-// --- 3. DATA SCHEMA (डेटाबेस में क्या सेव होगा) ---
-const LeadSchema = new mongoose.Schema({
-  name: String,
-  mobile: String,
-  address: String,
+// 2. LEAD SCHEMA (टेबल का पूरा ढांचा - कुछ भी मिसिंग नहीं है)
+const leadSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  phone: { type: String, required: true },
+  email: { type: String, default: 'Not Provided' },
+  address: { type: String, required: true },
+  inquiryType: { type: String, required: true }, // New Installation / Service
+  monthlyBill: { type: String, default: 'N/A' },   // सिर्फ नए कनेक्शन के लिए
+  currentKW: { type: String, default: 'N/A' },     // सिर्फ सर्विस के लिए
+  status: { type: String, default: 'Pending' },    // New, Processed, Closed
   createdAt: { type: Date, default: Date.now }
 });
 
-const Lead = mongoose.model('leads', LeadSchema);
+const Lead = mongoose.model('Lead', leadSchema);
 
-// --- 4. API ROUTES (डेटा लेने और देने के रास्ते) ---
+// 3. API ROUTES
 
-// यह रास्ता एडमिन पैनल में डेटा दिखाने के लिए है
+// A. नई लीड जमा करना (फ्रंटएंड फॉर्म के लिए)
+app.post('/api/leads', async (req, res) => {
+  try {
+    const leadData = new Lead(req.body);
+    await leadData.save();
+    res.status(201).json({ success: true, message: "Lead saved successfully!" });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+});
+
+// B. सारी लीड्स देखना (एडमिन पैनल के लिए)
 app.get('/api/leads', async (req, res) => {
   try {
     const leads = await Lead.find().sort({ createdAt: -1 });
-    res.status(200).json(leads);
-  } catch (err) {
-    res.status(500).json({ message: "Data fetch fail" });
+    res.json(leads);
+  } catch (error) {
+    res.status(500).json({ error: "Could not fetch leads" });
   }
 });
 
-// यह रास्ता वेबसाइट से नया फॉर्म डेटा सेव करने के लिए है
-app.post('/api/leads', async (req, res) => {
-  try {
-    const newLead = new Lead(req.body);
-    await newLead.save();
-    res.status(201).json({ message: "Lead saved!" });
-  } catch (err) {
-    res.status(400).json({ message: "Save fail" });
+// C. एडमिन लॉगिन (Password: admin123)
+app.post('/api/admin/login', async (req, res) => {
+  const { username, password } = req.body;
+  if (username === 'admin' && password === 'admin123') {
+    const token = jwt.sign({ user: 'admin' }, 'your_secret_key', { expiresIn: '1h' });
+    return res.json({ success: true, token });
   }
+  res.status(401).json({ success: false, message: "Invalid Credentials" });
 });
 
-// --- 5. SERVER PORT (पोर्ट सेटिंग - रेंडर और वर्सेल के लिए) ---
-// यह लाइन सबसे ज़रूरी है, यह अपने आप सही पोर्ट चुन लेगी
+// 4. SERVER START
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
