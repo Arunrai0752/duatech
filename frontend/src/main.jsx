@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
-import Admin from './admin'; // यहाँ हमने नया एडमिन पेज जोड़ा
+import admin from './admin'; // यहाँ हमने नया एडमिन पेज जोड़ा
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin" element={<admin />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
