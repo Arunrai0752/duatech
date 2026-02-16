@@ -1,19 +1,17 @@
-import {Routes,Route} from 'react-router-dom'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-import WhatsAppButton from './components/WhatsAppButton'
-import Home from './pages/Home'
-import Admin from './pages/Admin'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Admin from './pages/Admin';
 
-export default function App(){
-return(
-<>
-<Navbar/>
-<Routes>
-<Route path="/" element={<Home/>}/>
-<Route path="/admin" element={<Admin/>}/>
-</Routes>
-<WhatsAppButton/>
-<Footer/>
-</>
-)}
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* diwakar */}
+        <Route path="/duva-admin-786" element={<Admin />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
