@@ -1,58 +1,61 @@
 import React from 'react';
-import { Sun, Zap, Shield, Award, MessageCircle, Hammer, Phone } from 'lucide-react';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
-      <nav className="bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
-        <h1 className="text-xl font-black text-orange-600">DUVATECH SOLAR</h1>
-        <div className="flex gap-4 font-bold text-sm">
-          <a href="#home" className="hover:text-orange-500">Home</a>
-          <a href="#about" className="hover:text-orange-500">About</a>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Navbar Placeholder */}
+      <nav className="bg-slate-900 text-white p-4 flex justify-between items-center shadow-lg">
+        <h1 className="text-xl font-bold text-orange-500">DUVATECH SOLAR</h1>
+        <div className="flex gap-4 text-sm font-semibold">
+          <span>HOME</span>
+          <span>ABOUT</span>
+          <span>CONTACT</span>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <header className="bg-slate-900 text-white py-20 text-center">
-        <Sun className="mx-auto mb-4 text-orange-500" size={48} />
-        <h2 className="text-4xl font-black">AUTHORIZED SOLAR DEALER</h2>
-        <p className="text-gray-400 mt-2">TATA POWER | ADANI SOLAR | WAAREE</p>
-        <button className="mt-8 bg-orange-600 hover:bg-orange-700 px-8 py-3 rounded-full font-bold transition">
-          Get Quote
+      <header className="bg-white py-16 px-4 text-center border-b">
+        <div className="text-5xl mb-4">☀️</div> {/* Icon की जगह Emoji */}
+        <h2 className="text-4xl font-black text-slate-800">AUTHORIZED SOLAR DEALER</h2>
+        <p className="text-slate-600 mt-2 font-medium">TATA POWER | ADANI SOLAR | WAAREE</p>
+        <button className="mt-8 bg-orange-600 text-white px-10 py-3 rounded-full font-bold shadow-md hover:bg-orange-700 transition">
+          GET FREE QUOTE
         </button>
       </header>
 
-      {/* Services */}
-      <div className="max-w-6xl mx-auto py-16 px-4 grid md:grid-cols-3 gap-8">
-        <div className="bg-white p-6 rounded-xl shadow-sm border-b-4 border-orange-500">
-          <Zap className="text-orange-500 mb-4" />
-          <h3 className="font-bold text-lg">Solar Panels</h3>
-          <p className="text-gray-600 text-sm mt-2">High efficiency monocrystalline panels for maximum power.</p>
+      {/* Services Placeholders */}
+      <div className="max-w-6xl mx-auto py-16 px-4 grid md:grid-cols-3 gap-8 w-full">
+        {/* Card 1 */}
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+          <div className="text-orange-500 text-2xl mb-2 font-bold">[ SOLAR PANEL ]</div>
+          <p className="text-gray-500 text-sm">High efficiency monocrystalline solar modules for home and industry.</p>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border-b-4 border-orange-500">
-          <Shield className="text-orange-500 mb-4" />
-          <h3 className="font-bold text-lg">Warranty</h3>
-          <p className="text-gray-600 text-sm mt-2">25 years of performance warranty on all solar modules.</p>
+
+        {/* Card 2 */}
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+          <div className="text-orange-500 text-2xl mb-2 font-bold">[ INSTALLATION ]</div>
+          <p className="text-gray-500 text-sm">Professional engineering team for secure and fast rooftop setup.</p>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border-b-4 border-orange-500">
-          <Hammer className="text-orange-500 mb-4" />
-          <h3 className="font-bold text-lg">Installation</h3>
-          <p className="text-gray-600 text-sm mt-2">Professional team for secure and optimized setup.</p>
+
+        {/* Card 3 */}
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+          <div className="text-orange-500 text-2xl mb-2 font-bold">[ WARRANTY ]</div>
+          <p className="text-gray-500 text-sm">Peace of mind with 25 years of performance warranty on products.</p>
         </div>
       </div>
 
-      {/* WhatsApp Button */}
-      <a 
-        href="https://wa.me/yournumber" 
-        className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:scale-110 transition"
-      >
-        <MessageCircle size={30} />
-      </a>
+      {/* Info Section */}
+      <section className="bg-slate-100 py-12 text-center mt-auto">
+        <h3 className="text-2xl font-bold text-slate-800">Ready to go Solar?</h3>
+        <p className="text-slate-600 mt-2">Join 1000+ happy customers in Indore.</p>
+        <div className="mt-4 font-bold text-green-600 text-xl">
+          📞 WhatsApp: +91-XXXXXXXXXX
+        </div>
+      </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white p-10 mt-10 text-center">
-        <p>© 2026 DUVATECH SOLAR | INDORE, MP</p>
+      <footer className="bg-slate-900 text-white p-6 text-center text-sm">
+        <p>© 2026 DUVATECH SOLAR | INDORE, MP | All Rights Reserved.</p>
       </footer>
     </div>
   );
