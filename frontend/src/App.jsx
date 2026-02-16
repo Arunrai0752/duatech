@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sun, Zap, Cable, Factory, CheckCircle, Phone, Shield, Award, MessageCircle, Hammer } from 'lucide-react';
+import { Sun, Zap, Phone, Shield, Award, MessageCircle, Hammer } from 'lucide-react';
 
 export default function App() {
   const [inquiryType, setInquiryType] = useState('New Installation');
