@@ -8,7 +8,7 @@ const Home = ({ addLead }) => {
   const handleWhatsApp = () => {
     addLead(formData); // लीड को एडमिन पैनल के लिए सेव करना
     const msg = `Hello Duvatech Solar, I am interested in ${formData.type} solar. Name: ${formData.name}`;
-    window.open(`https://wa.me/919000000000?text=${encodeURIComponent(msg)}`, '_blank');
+    window.open(`https://wa.me/8982910432?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
   return (
