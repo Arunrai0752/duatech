@@ -2,8 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   padding: 0;
+  background-color: #0f172a; /* Dark Slate Background */
   overflow-x: hidden;
+}
+
+/* Custom Scrollbar for Premium Feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #f97316;
+  border-radius: 10px;
 }
