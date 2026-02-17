@@ -6,10 +6,18 @@ import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 const Home = ({ addLead }) => {
   const [formData, setFormData] = useState({ name: '', phone: '', type: 'Residential' });
 
-  const handleWhatsApp = () => {
-    addLead(formData); // लीड को एडमिन पैनल के लिए सेव करना
-    const msg = `Hello Duvatech Solar, I am interested in ${formData.type} solar. Name: ${formData.name}`;
-    window.open(`https://wa.me/8982910432?text=${encodeURIComponent(msg)}`, '_blank');
+ const handleWhatsApp = async () => {
+    // 1. Sending to Database
+    try {
+      await axios.post('/api/leads', formData);
+      console.log("Lead Saved Successfully!");
+    } catch (err) {
+      console.error("Database connection failed, but proceeding to WhatsApp.");
+    }
+
+    // 2. Direct Redirect to Your WhatsApp (8982910432)
+    const msg = `*NEW SOLAR INQUIRY* ☀️%0A%0A*Name:* ${formData.name}%0A*Mobile:* ${formData.phone}%0A*Type:* ${formData.type}`;
+    window.open(`https://wa.me/918982910432?text=${msg}`, '_blank');
   };
 
   return (
