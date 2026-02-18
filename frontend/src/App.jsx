@@ -32,7 +32,7 @@ const App = () => {
             <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(249,115,22,0.4)]">
               <span className="text-white font-black text-xl">D</span>
             </div>
-            <span className="text-2xl font-black tracking-tighter text-white uppercase italic">Dua<span className="text-orange-600">Tech</span></span>
+            <span className="text-2xl font-black tracking-tighter text-blue-600 uppercase italic">duva<span className="text-orange-600">Tech</span></span>
           </div>
           <div className="hidden md:flex gap-8 text-[11px] font-bold uppercase tracking-[2px]">
             <a href="#home" className="hover:text-orange-500 transition-colors">Home</a>
@@ -82,23 +82,104 @@ const App = () => {
       </section>
 
       {/* LEAD FORM SECTION */}
-      <section id="contact" className="py-32 px-6">
-        <div className="max-w-4xl mx-auto bg-slate-900 border border-white/10 p-12 rounded-[3rem] shadow-2xl">
-          <h2 className="text-4xl font-black text-white mb-10 text-center uppercase italic tracking-tighter">Request A Call Back</h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              <input type="text" placeholder="NAME" required className="w-full bg-black/40 border border-white/5 p-5 rounded-2xl outline-none focus:border-orange-500 transition-all font-bold text-xs text-white" onChange={e => setFormData({...formData, name: e.target.value})} />
-              <input type="tel" placeholder="PHONE" required className="w-full bg-black/40 border border-white/5 p-5 rounded-2xl outline-none focus:border-orange-500 transition-all font-bold text-xs text-white" onChange={e => setFormData({...formData, phone: e.target.value})} />
-            </div>
-            <input type="text" placeholder="ADDRESS (INDORE)" required className="w-full bg-black/40 border border-white/5 p-5 rounded-2xl outline-none focus:border-orange-500 transition-all font-bold text-xs text-white" onChange={e => setFormData({...formData, address: e.target.value})} />
-            <button type="submit" className="w-full bg-orange-600 text-white font-black py-6 rounded-2xl text-xs tracking-[4px] hover:bg-white hover:text-orange-600 transition-all shadow-xl uppercase">Submit Transmission</button>
-          </form>
-        </div>
-      </section>
+     <section className="py-12 bg-gray-900 text-white">
+  <div className="container mx-auto px-4">
+    <div className="grid md:grid-cols-2 gap-8">
+      
+      {/* फॉर्म 1: न्यू सोलर कनेक्शन */}
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h3 className="text-xl font-bold mb-4 text-orange-500">New Solar Connection Enquiry</h3>
+        <form onSubmit={handleFormSubmit} className="flex flex-col gap-3">
+          <input type="text" placeholder="Name" className="p-2 rounded bg-gray-700 border-none outline-none" required />
+          <input type="tel" placeholder="Mobile Number" className="p-2 rounded bg-gray-700 border-none outline-none" required />
+          <textarea placeholder="Address" className="p-2 rounded bg-gray-700 h-24" required></textarea>
+          <button type="submit" className="bg-orange-600 p-2 rounded hover:bg-orange-700 transition">Submit Enquiry</button>
+        </form>
+      </div>
 
-      <footer className="py-20 text-center border-t border-white/5 opacity-40">
-        <p className="text-[10px] font-bold uppercase tracking-[10px]">DuaTech • Indore • 2026</p>
-      </footer>
+      {/* फॉर्म 2: सर्विस एंड मेंटेनेंस */}
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg border-l-4 border-green-500">
+        <h3 className="text-xl font-bold mb-4 text-green-500">Service & Maintenance</h3>
+        <form onSubmit={handleFormSubmit} className="flex flex-col gap-3">
+          <input type="text" placeholder="Name" className="p-2 rounded bg-gray-700" required />
+          <input type="tel" placeholder="Mobile Number" className="p-2 rounded bg-gray-700" required />
+          <input type="text" placeholder="Installed Plant Capacity (kW)" className="p-2 rounded bg-gray-700" required />
+          <textarea placeholder="Address" className="p-2 rounded bg-gray-700 h-24" required></textarea>
+          <button type="submit" className="bg-green-600 p-2 rounded hover:bg-green-700 transition">Submit Request</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+      {/* --- PROFESSIONAL FOOTER START --- */}
+<footer className="bg-black text-gray-400 py-12 border-t border-gray-800">
+  <div className="container mx-auto px-6 grid md:grid-cols-4 gap-8">
+    
+    {/* कॉलम 1: ब्रांड और लोगो */}
+    <div className="space-y-4">
+      <div className="text-2xl font-bold flex items-baseline">
+        <span className="text-blue-600">DUVA</span>
+        <span className="text-green-500 text-lg ml-1">tECH</span>
+      </div>
+      <p className="text-sm leading-relaxed">
+        Leading the way in sustainable solar energy solutions. 
+        Transforming lives with clean and affordable power.
+      </p>
+    </div>
+
+    {/* कॉलम 2: संपर्क जानकारी */}
+    <div>
+      <h4 className="text-white font-bold mb-4 border-b border-blue-600 pb-2 w-fit">Contact Us</h4>
+      <ul className="space-y-2 text-sm">
+        <li>Email: info@duvatech.com</li>
+        <li>Phone: +91 98765 43210</li>
+        <li>GST: 23AAAAA0000A1Z5</li>
+      </ul>
+    </div>
+
+    {/* कॉलम 3: पता */}
+    <div>
+      <h4 className="text-white font-bold mb-4 border-b border-blue-600 pb-2 w-fit">Office Address</h4>
+      <p className="text-sm">
+        123, Solar Plaza, Green City,<br/>
+        Near Main Square, Bhopal,<br/>
+        Madhya Pradesh - 462001
+      </p>
+    </div>
+
+    {/* कॉलम 4: नीतियां (Policies) */}
+    <div>
+      <h4 className="text-white font-bold mb-4 border-b border-blue-600 pb-2 w-fit">Quick Links</h4>
+      <ul className="space-y-2 text-sm italic">
+        <li><a href="#" className="hover:text-blue-500 transition">Privacy Policy</a></li>
+        <li><a href="#" className="hover:text-blue-500 transition">Terms & Conditions</a></li>
+        <li><a href="#" className="hover:text-blue-500 transition">Refund Policy</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  {/* कॉपीराइट वाला हिस्सा */}
+  <div className="text-center mt-12 pt-8 border-t border-gray-900 text-xs tracking-widest">
+    © 2026 DUVAtECH SOLAR SOLUTIONS | ALL RIGHTS RESERVED.
+  </div>
+</footer>
+{/* --- PROFESSIONAL FOOTER END --- */}
+  {/* --- WHATSAPP FLOATING ICON --- */}
+<a 
+  href="https://wa.me/8881177764" // अपना व्हाट्सएप नंबर यहाँ बदले
+  target="_blank" 
+  rel="noopener noreferrer"
+  className="fixed bottom-6 right-6 bg-green-500 p-4 rounded-full shadow-2xl hover:scale-110 transition-transform z-[9999]"
+>
+  <img 
+    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+    alt="WhatsApp" 
+    className="w-8 h-8" 
+  />
+</a>    
     </div>
   );
 };
