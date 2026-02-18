@@ -22,18 +22,22 @@ mongoose.connect(mongoURI)
   .catch((err) => console.error("❌ Database Connection Failed:", err));
 
 // 3. Lead Schema (जैसा तेरे प्रोजेक्ट में था)
-const leadSchema = new mongoose.Schema({
+// 3. Lead Schema (नए फॉर्म के हिसाब से अपडेटेड)
+const leadschema = new mongoose.Schema({
   name: String,
-  phone: String,
+  mobile: String,      // फ्रंटएंड में 'mobile' नाम रखा है हमने
   address: String,
-  inquiryType: String,
+  email: String,
+  serviceType: String,      // New or Old
+  projectType: String,      // Residential/Industrial
   monthlyBill: String,
-  currentKW: String,
+  sanctionLoad: String,
+  installedSize: String,    // Old plant size के लिए
   status: { type: String, default: 'Pending' },
   createdAt: { type: Date, default: Date.now }
 });
 
-const Lead = mongoose.model('Lead', leadSchema);
+const Lead = mongoose.model('Lead', leadschema);
 
 // 4. API Routes
 // लीड्स जमा करने के लिए (Frontend से आएगा)
@@ -41,7 +45,7 @@ app.post('/api/leads', async (req, res) => {
   try {
     const newLead = new Lead(req.body);
     await newLead.save();
-    res.status(201).json({ success: true, message: "Lead saved!" });
+    res.status(201).json({ success: true, message: "Lead saved successfully!" });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
