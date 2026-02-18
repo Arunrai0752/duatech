@@ -58,33 +58,29 @@ export default function App() {
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-blue-500 selection:text-white">
       
-      {/* 1. STICKY NAVBAR */}
-      <nav className="sticky top-0 z-[100] bg-black/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 flex justify-between items-center">
-        <div className="text-2xl font-black tracking-tight">
-          <span className="text-blue-600">DUVA</span>
-          <span className="text-green-500 ml-1">Tech</span>
-        </div>
-        <div className="hidden md:flex space-x-8 text-xs font-bold uppercase tracking-widest">
-          <a href="#" className="hover:text-blue-500 transition">Home</a>
-          <a href="#solutions" className="hover:text-blue-500 transition">Solutions</a>
-          <a href="#offers" className="hover:text-blue-500 transition">Offers</a>
-          <a href="#contact" className="hover:text-blue-500 transition">Contact</a>
-        </div>
-      </nav>
+     {/* --- NAVBAR START --- */}
+<nav className="sticky top-0 z-[100] bg-white border-b-4 border-green-600 px-6 py-4 flex justify-between items-center shadow-lg">
+  <div className="text-2xl font-black italic">
+    <span className="text-orange-600 uppercase">DUVA</span>
+    <span className="text-green-600 ml-1">Tech</span>
+  </div>
+  <div className="hidden md:flex space-x-6 text-sm font-black uppercase tracking-widest text-gray-600">
+    <a href="#" className="hover:text-orange-500 transition">Home</a>
+    <a href="#solutions" className="hover:text-green-600 transition">Solutions</a>
+    <a href="#contact" className="hover:text-orange-500 transition">Contact</a>
+  </div>
+</nav>
+{/* --- NAVBAR END --- */}
 
-      {/* 2. HERO SECTION (Rectangular Image - 40% Height) */}
-      <header className="relative w-full h-[40vh] overflow-hidden border-b border-gray-900">
-        <img 
-          src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2072" 
-          alt="Solar Panels Banner" 
-          className="w-full h-full object-cover opacity-70 grayscale-[30%] hover:grayscale-0 transition-all duration-700"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
-          <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-2">Solar Energy Solutions</h1>
-          <p className="text-blue-400 font-mono text-sm tracking-widest">CLEAN POWER • SUSTAINABLE FUTURE</p>
-        </div>
-      </header>
+     {/* --- HERO SECTION START --- */}
+<header className="py-20 bg-white text-center border-b border-gray-100">
+  <h1 className="text-5xl md:text-7xl font-black text-gray-900 leading-tight">
+    Switch to <span className="text-orange-600 italic">Solar</span>,<br/>
+    Save the <span className="text-green-600 underline">Earth</span>.
+  </h1>
+  <p className="mt-6 text-gray-500 font-bold tracking-widest uppercase">Clean • Affordable • Reliable</p>
+</header>
+{/* --- HERO SECTION END --- */}
 
       {/* 3. SOLUTIONS SECTION */}
       <section id="solutions" className="py-20 container mx-auto px-6">
@@ -98,40 +94,31 @@ export default function App() {
         </div>
       </section>
 
-      {/* 4. DUAL FORMS SECTION */}
-      <section id="contact" className="py-20 bg-zinc-950 border-y border-gray-900">
-        <div className="container mx-auto px-6 grid md:grid-cols-2 gap-16">
-          
-          {/* New Enquiry Form */}
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <span className="w-8 h-[2px] bg-blue-600"></span> New Connection
-            </h2>
-            <form onSubmit={(e) => handleFormSubmit(e, 'New Enquiry')} className="space-y-4 bg-black p-8 rounded-3xl border border-gray-800 shadow-2xl">
-              <input name="name" type="text" placeholder="Your Name" className="w-full bg-transparent border-b border-gray-700 p-3 outline-none focus:border-blue-600 transition" required />
-              <input name="mobile" type="tel" placeholder="Mobile Number" className="w-full bg-transparent border-b border-gray-700 p-3 outline-none focus:border-blue-600 transition" required />
-              <textarea name="address" placeholder="Installation Address" className="w-full bg-transparent border-b border-gray-700 p-3 outline-none focus:border-blue-600 transition h-24" required></textarea>
-              <button className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-900/20">Submit Enquiry</button>
-            </form>
-          </div>
+     {/* --- FORMS SECTION START --- */}
+<section id="contact" className="py-20 bg-gray-50">
+  <div className="container mx-auto px-6 grid md:grid-cols-2 gap-10">
+    
+    {/* New Connection (Orange) */}
+    <div className="bg-white p-8 rounded-[2rem] border-t-8 border-orange-500 shadow-2xl">
+      <h2 className="text-3xl font-black mb-6 text-orange-600 uppercase italic">New Connection</h2>
+      <div className="space-y-4">
+        <input type="text" placeholder="Full Name" className="w-full border-2 border-gray-100 p-4 rounded-xl focus:border-orange-500 outline-none bg-gray-50" />
+        <button className="w-full bg-orange-600 text-white font-black py-4 rounded-xl text-lg">GET QUOTE</button>
+      </div>
+    </div>
 
-          {/* Maintenance Form */}
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold flex items-center gap-2 text-green-500">
-              <span className="w-8 h-[2px] bg-green-500"></span> Service & Maintenance
-            </h2>
-            <form onSubmit={(e) => handleFormSubmit(e, 'Maintenance')} className="space-y-4 bg-black p-8 rounded-3xl border border-gray-800 shadow-2xl">
-              <input name="name" type="text" placeholder="Your Name" className="w-full bg-transparent border-b border-gray-700 p-3 outline-none focus:border-green-600 transition" required />
-              <input name="mobile" type="tel" placeholder="Mobile Number" className="w-full bg-transparent border-b border-gray-700 p-3 outline-none focus:border-green-600 transition" required />
-              <input name="capacity" type="text" placeholder="Plant Capacity (kW)" className="w-full bg-transparent border-b border-gray-700 p-3 outline-none focus:border-green-600 transition" required />
-              <textarea name="address" placeholder="Address" className="w-full bg-transparent border-b border-gray-700 p-3 outline-none focus:border-green-600 transition h-24" required></textarea>
-              <button className="w-full bg-green-600 text-white font-bold py-4 rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-900/20">Book Service</button>
-            </form>
-          </div>
+    {/* Maintenance (Green) */}
+    <div className="bg-white p-8 rounded-[2rem] border-t-8 border-green-600 shadow-2xl">
+      <h2 className="text-3xl font-black mb-6 text-green-600 uppercase italic">Maintenance</h2>
+      <div className="space-y-4">
+        <input type="text" placeholder="Full Name" className="w-full border-2 border-gray-100 p-4 rounded-xl focus:border-green-500 outline-none bg-gray-50" />
+        <button className="w-full bg-green-600 text-white font-black py-4 rounded-xl text-lg">BOOK SERVICE</button>
+      </div>
+    </div>
 
-        </div>
-      </section>
-
+  </div>
+</section>
+{/* --- FORMS SECTION END --- */}
       {/* 5. FULL FOOTER */}
       <footer className="bg-black pt-20 pb-10 border-t border-gray-900">
         <div className="container mx-auto px-6 grid md:grid-cols-4 gap-12">
