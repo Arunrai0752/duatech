@@ -2,25 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* Smooth Scroll */
+html {
   scroll-behavior: smooth;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #0f172a; /* Dark Slate Background */
-  overflow-x: hidden;
-}
-
-/* Custom Scrollbar for Premium Feel */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
-::-webkit-scrollbar-track {
-  background: #0f172a;
-}
+
 ::-webkit-scrollbar-thumb {
-  background: #f97316;
+  background: #ff7a00;
   border-radius: 10px;
+}
+
+/* Selection Color */
+::selection {
+  background: #ff7a00;
+  color: white;
 }
