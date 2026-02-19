@@ -1,13 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Components
+// 1. Components Imports
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
-import Logo from './components/Logo';
 
-// Pages - जैसा तूने बताया: फोल्डर छोटा (pages) और फाइल का पहला अक्षर बड़ा (Admin)
+// 2. Pages Imports
 import Home from './pages/Home';
 import Admin from './pages/Admin';
 import Dashboard from './pages/Dashboard';
@@ -19,9 +18,11 @@ function App() {
   return (
     <Router>
       <div className="flex flex-col min-h-screen bg-[#0A1F44] text-white">
+        {/* नेविगेशन बार हमेशा ऊपर रहेगा */}
         <Navbar />
         
-        <main className="flex-grow pt-20"> 
+        {/* यहाँ आपके सारे पेजेस बदलेंगे (Routing) */}
+        <main className="flex-grow pt-20">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
@@ -32,6 +33,7 @@ function App() {
           </Routes>
         </main>
 
+        {/* फुटर और व्हाट्सएप बटन हमेशा नीचे रहेंगे */}
         <Footer />
         <WhatsAppButton />
       </div>
