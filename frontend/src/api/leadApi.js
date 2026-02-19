@@ -1,41 +1,11 @@
-// ===============================
-// 🔥 leadApi.js — FRONTEND API FILE
-// ===============================
+import axios from 'axios';
 
-// NOTE:
-// 👉 यहाँ तू अपने Database/API endpoint का URL डालना
-// 👉 Example: https://your-database.com/saveLead
-// 👉 अभी temporary demo link डाल रखा है (तू बदल देगा)
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-const API_URL = "https://your-database-url.com/api/lead";
-
-// =======================================
-// 📝 SAVE LEAD FUNCTION
-// =======================================
-
-export const saveLead = async (formData) => {
-  try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const data = await response.json();
-    return {
-      success: true,
-      message: "Lead Saved Successfully!",
-      data,
-    };
-  } catch (error) {
-    console.error("Lead API Error:", error);
-
-    return {
-      success: false,
-      message: "Failed to submit lead",
-      error,
-    };
-  }
-};
+export const submitLead = (data) => axios.post(`${API_URL}/leads`, data);
+export const getLeads = (token) => axios.get(`${API_URL}/admin/leads`, {
+    headers: { Authorization: `Bearer ${token}` }
+});
+export const updateLeadStatus = (id, status, token) => axios.put(`${API_URL}/admin/leads/${id}`, { status }, {
+    headers: { Authorization: `Bearer ${token}` }
+});
