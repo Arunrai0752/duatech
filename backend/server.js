@@ -8,9 +8,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// आपकी फोटो से निकाला गया असली MongoDB लिंक
-const mongoURI = "mongodb+srv://cergibwale_db_user:Vl149xx5IhqolvEF4@cluster0.ogg6awx.mongodb.net/Duatech_solar_leads?retryWrites=true&w=majority&appName=Cluster0";
-
 mongoose.connect(mongoURI)
     .then(() => console.log('✅ MongoDB Connected Successfully'))
     .catch(err => console.error('❌ Connection Error:', err));
