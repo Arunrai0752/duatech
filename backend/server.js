@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// लाइन 10 के नीचे यह चिपका दे
+// MongoDB Connection
 const mongoURI = process.env.MONGODB_URI || "mongodb+srv://cergibwale_db_user:Vl149xx5IHq9p8Ld@cluster0.p78vi.mongodb.net/Solar_Lead?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose.connect(mongoURI)
@@ -30,7 +30,9 @@ const LeadSchema = new mongoose.Schema({
 
 const Lead = mongoose.model('Lead', LeadSchema);
 
-// API Routes
+// --- API Routes ---
+
+// 1. नई लीड सेव करने के लिए
 app.post('/api/leads', async (req, res) => {
     try {
         const newLead = new Lead(req.body);
@@ -39,10 +41,12 @@ app.post('/api/leads', async (req, res) => {
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
-// लॉगिन के लिए नया रास्ता
+}); // <--- यहाँ ब्रैकेट बंद नहीं था, अब ठीक कर दिया है
+
+// 2. एडमिन लॉगिन के लिए
 app.post('/api/login', (req, res) => {
     const { password } = req.body;
-    // जो पासवर्ड तूने MongoDB में '123' डाला है, वही यहाँ चेक होगा
+    // पासवर्ड यहाँ '123' रखा है
     if (password === "123") {
         res.status(200).json({ success: true });
     } else {
@@ -50,6 +54,7 @@ app.post('/api/login', (req, res) => {
     }
 });
 
+// 3. सारी लीड्स देखने के लिए
 app.get('/api/admin/leads', async (req, res) => {
     try {
         const leads = await Lead.find().sort({ createdAt: -1 });
