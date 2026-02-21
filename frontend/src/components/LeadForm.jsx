@@ -35,12 +35,13 @@ export default function LeadForm() {
           action="http://localhost:5000/new-connection"
           className="space-y-4"
         >
+          {/* Change: Yahan text-black add kiya hai */}
           <input
             type="text"
             name="name"
             required
             placeholder="Full Name"
-            className="w-full border p-3 rounded"
+            className="w-full border p-3 rounded text-black"
           />
 
           <input
@@ -50,7 +51,7 @@ export default function LeadForm() {
             maxLength="10"
             pattern="[0-9]{10}"
             placeholder="Phone Number (10 digits)"
-            className="w-full border p-3 rounded"
+            className="w-full border p-3 rounded text-black"
           />
 
           <input
@@ -58,7 +59,7 @@ export default function LeadForm() {
             name="city"
             required
             placeholder="City"
-            className="w-full border p-3 rounded"
+            className="w-full border p-3 rounded text-black"
           />
 
           <input
@@ -66,7 +67,7 @@ export default function LeadForm() {
             name="pincode"
             required
             placeholder="Pincode"
-            className="w-full border p-3 rounded"
+            className="w-full border p-3 rounded text-black"
           />
 
           <input
@@ -74,7 +75,7 @@ export default function LeadForm() {
             name="billAmount"
             required
             placeholder="Bill Amount"
-            className="w-full border p-3 rounded"
+            className="w-full border p-3 rounded text-black"
           />
 
           <input
@@ -82,14 +83,14 @@ export default function LeadForm() {
             name="consumerNumber"
             required
             placeholder="Consumer Number"
-            className="w-full border p-3 rounded"
+            className="w-full border p-3 rounded text-black"
           />
 
           <textarea
             name="address"
             required
             placeholder="Full Address"
-            className="w-full border p-3 rounded"
+            className="w-full border p-3 rounded text-black"
           ></textarea>
 
           <button className="w-full bg-blue-600 text-white p-3 rounded text-lg">
@@ -105,12 +106,13 @@ export default function LeadForm() {
           action="http://localhost:5000/Service-request"
           className="space-y-4"
         >
+          {/* Change: Yahan bhi text-black add kiya hai */}
           <input
             type="text"
             name="name"
             required
             placeholder="Full Name"
-            className="w-full border p-3 rounded"
+            className="w-full border p-3 rounded text-black"
           />
 
           <input
@@ -120,7 +122,7 @@ export default function LeadForm() {
             maxLength="10"
             pattern="[0-9]{10}"
             placeholder="Phone Number (10 digits)"
-            className="w-full border p-3 rounded"
+            className="w-full border p-3 rounded text-black"
           />
 
           <input
@@ -128,14 +130,14 @@ export default function LeadForm() {
             name="capacity"
             required
             placeholder="Plant Capacity (kW)"
-            className="w-full border p-3 rounded"
+            className="w-full border p-3 rounded text-black"
           />
 
           <textarea
             name="address"
             required
             placeholder="Full Address"
-            className="w-full border p-3 rounded"
+            className="w-full border p-3 rounded text-black"
           ></textarea>
 
           <button className="w-full bg-blue-600 text-white p-3 rounded text-lg">
