@@ -46,11 +46,12 @@ app.post('/api/leads', async (req, res) => {
 // 2. एडमिन लॉगिन के लिए
 app.post('/api/login', (req, res) => {
     const { password } = req.body;
+    console.log("Frontend sent:",password);
     // पासवर्ड यहाँ '123' रखा है
     if (password === "123") {
-        res.status(200).json({ success: true });
+        return res.status(200).json({ success: true });
     } else {
-        res.status(401).json({ success: false, message: "गलत पासवर्ड!" });
+       return res.status(401).json({ success: false, message: "गलत पासवर्ड!" });
     }
 });
 
