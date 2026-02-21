@@ -8,6 +8,7 @@ import WhatsAppButton from './components/WhatsAppButton';
 
 // 2. Pages Imports
 import Home from './pages/Home';
+import Services from'./components/services';
 import Admin from './pages/Admin';
 import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
@@ -25,6 +26,7 @@ function App() {
         <main className="flex-grow pt-20">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/element={<Services/>} />
             <Route path="/products" element={<Products />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/testimonials" element={<Testimonials />} />
