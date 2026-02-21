@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // आपका Render वाला बैकएंड लिंक (जो आपने फोटो में दिखाया है)
-const API_URL = "https://duatech-1.onrender.com/api"; 
+const API_URL = "https://duatech-1.onrender.com/api/login"; 
 
 /**
  * 1. नया लीड (Lead) सबमिट करने के लिए
