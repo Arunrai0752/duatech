@@ -1,72 +1,59 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
 
 const app = express();
-
-// Middleware
-app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
-// MongoDB Connection
-const mongoURI = process.env.MONGODB_URI || "mongodb+srv://cergibwale_db_user:Vl149xx5IHq9p8Ld@cluster0.p78vi.mongodb.net/Solar_Lead?retryWrites=true&w=majority&appName=Cluster0";
+// ------------------ MONGODB URL FIXED ------------------ //
+const MONGO_URL =
+  "mongodb+srv://CERGIBWALE_DB_USER:YOUR_PASSWORD_HERE@cluster0.ogg6awx.mongodb.net/solarLeads?retryWrites=true&w=majority&appName=Cluster0";
 
-mongoose.connect(mongoURI)
-  .then(() => console.log('✅ MongoDB Connected Successfully'))
-  .catch(err => console.error('❌ Connection Error:', err));
+mongoose
+  .connect(MONGO_URL)
+  .then(() => console.log("🔥 MongoDB Connected Successfully"))
+  .catch((err) => console.log("❌ DB Connection Error:", err));
 
-// Lead Schema
-const LeadSchema = new mongoose.Schema({
+// --------------------- SCHEMA --------------------- //
+const leadSchema = new mongoose.Schema(
+  {
+    type: String,
     name: String,
-    mobile: String,
-    email: String,
+    phone: String,
+    city: String,
+    pincode: String,
+    billAmount: String,
+    consumerNumber: String,
+    capacity: String,
     address: String,
-    serviceType: String,
-    projectType: String,
-    monthlyBill: String,
-    status: { type: String, default: 'Pending' },
-    createdAt: { type: Date, default: Date.now }
+  },
+  { timestamps: true }
+);
+
+const Lead = mongoose.model("Lead", leadSchema);
+
+// --------------------- ROUTES ---------------------- //
+app.post("/new-connection", async (req, res) => {
+  try {
+    await Lead.create({ type: "new", ...req.body });
+    res.send("New Solar Lead Saved!");
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
-const Lead = mongoose.model('Lead', LeadSchema);
-
-// --- API Routes ---
-
-// 1. नई लीड सेव करने के लिए
-app.post('/api/leads', async (req, res) => {
-    try {
-        const newLead = new Lead(req.body);
-        await newLead.save();
-        res.status(201).json({ success: true, message: "Lead saved successfully!" });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
-}); // <--- यहाँ ब्रैकेट बंद नहीं था, अब ठीक कर दिया है
-
-// 2. एडमिन लॉगिन के लिए
-app.post('/api/login', (req, res) => {
-    const { password } = req.body;
-    console.log("Frontend sent:",password);
-    // पासवर्ड यहाँ '123' रखा है
-    if (password === "123") {
-        return res.status(200).json({ success: true });
-    } else {
-       return res.status(401).json({ success: false, message: "गलत पासवर्ड!" });
-    }
+app.post("/service-request", async (req, res) => {
+  try {
+    await Lead.create({ type: "service", ...req.body });
+    res.send("Service Lead Saved!");
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
-// 3. सारी लीड्स देखने के लिए
-app.get('/api/admin/leads', async (req, res) => {
-    try {
-        const leads = await Lead.find().sort({ createdAt: -1 });
-        res.json(leads);
-    } catch (error) {
-        res.status(500).json({ error: "Fetching failed" });
-    }
-});
-
-// Server Port
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
-});
+// -------------------- RENDER PORT FIX ---------------------- //
+app.listen(process.env.PORT || 5000, () =>
+  console.log("🚀 Server Running (Render Compatible)")
+);
