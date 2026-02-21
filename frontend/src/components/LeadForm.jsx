@@ -10,7 +10,7 @@ export default function LeadForm() {
       {/* BUTTONS */}
       <div className="flex justify-between mb-6">
         <button
-          className={`w-1/2 p-3 mr-2 rounded text-white ${
+          className={`w-1/2 p-3 mr-2 rounded text-black ${
             type === "new" ? "bg-blue-600" : "bg-gray-500"
           }`}
           onClick={() => setType("new")}
