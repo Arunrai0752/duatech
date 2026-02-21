@@ -9,7 +9,7 @@ app.use(cors());
 
 // ------------------ MONGODB URL FIXED ------------------ //
 const MONGO_URL =
-  "mongodb+srv://cergibwale_db_user:VtdYMmaN9Cd0ZFni%40cluster0.ogg6awx.mongodb.net/Duatech_solar_leads?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://cergibwale_db_user:VtdYMmaN9Cd0ZFni@cluster0.ogg6awx.mongodb.net/Duvatech_solar_leads?retryWrites=true&w=majority";
 
 mongoose
   .connect(MONGO_URL)
@@ -54,6 +54,6 @@ app.post("/service-request", async (req, res) => {
 });
 
 // -------------------- RENDER PORT FIX ---------------------- //
-app.listen(process.env.PORT || 5000, () =>
+app.listen(process.env.PORT || 10000, () =>
   console.log("🚀 Server Running (Render Compatible)")
 );
