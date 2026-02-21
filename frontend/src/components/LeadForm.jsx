@@ -20,9 +20,9 @@ export default function LeadForm() {
 
         <button
           className={`w-1/2 p-3 ml-2 rounded text-white ${
-            type === "service" ? "bg-blue-600" : "bg-gray-500"
+            type === "Service" ? "bg-blue-600" : "bg-gray-500"
           }`}
-          onClick={() => setType("service")}
+          onClick={() => setType("Service")}
         >
           For Service Only
         </button>
@@ -99,10 +99,10 @@ export default function LeadForm() {
       )}
 
       {/* SERVICE FORM */}
-      {type === "service" && (
+      {type === "Service" && (
         <form
           method="POST"
-          action="http://localhost:5000/service-request"
+          action="http://localhost:5000/Service-request"
           className="space-y-4"
         >
           <input
