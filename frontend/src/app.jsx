@@ -9,6 +9,7 @@ import WhatsAppButton from './components/WhatsAppButton';
 // 2. Pages Imports
 import Home from './pages/Home';
 import Admin from './pages/Admin';
+import Brands from './pages/Brands';
 import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
 import Projects from './pages/Projects';
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/brands" element={<Brands />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/services" element={<Products />} /> {/* Products ko hi services ki tarah use kar rahe ho */}
           <Route path="/projects" element={<Projects />} />
