@@ -21,10 +21,6 @@ const Navbar = () => {
         <Link to="/services" className="hover:text-[#00FF88] transition-colors text-white">Services</Link>
         <Link to="/projects" className="hover:text-[#00FF88] transition-colors text-white">Projects</Link>
         
-        {/* Admin Button - जैसा तूने दिया था */}
-        <Link to="/admin" className="text-[#00FF88] border border-[#00FF88] px-4 py-1 rounded-full hover:bg-[#00FF88] hover:text-[#0A1F44] transition-all">
-          Admin
-        </Link>
       </div>
 
       {/* MOBILE HAMBURGER BUTTON - ये नया joda hai mobile ke liye */}
