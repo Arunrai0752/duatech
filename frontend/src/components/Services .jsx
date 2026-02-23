@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const Services = () => {
-  // यह पता रखने के लिए कि कौन सा सेक्शन खुला है
   const [openSection, setOpenSection] = useState(null);
+  
+  // Is ref ka use karke hum scroll target set karenge
+  const scrollRef = useRef(null);
 
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
   };
+
+  // Jab bhi openSection change hoga, ye effect trigger hoga
+  useEffect(() => {
+    if (openSection && scrollRef.current) {
+      scrollRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start', // Section ke top par scroll karega
+      });
+    }
+  }, [openSection]);
 
   const solarData = [
     {
@@ -52,7 +64,12 @@ const Services = () => {
 
         <div className="space-y-4">
           {solarData.map((item) => (
-            <div key={item.id} className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
+            <div 
+              key={item.id} 
+              // Agar ye section open hai, toh ref is par attach ho jayega
+              ref={openSection === item.id ? scrollRef : null}
+              className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden"
+            >
               <button
                 onClick={() => toggleSection(item.id)}
                 className="w-full flex justify-between items-center p-6 text-left font-bold text-xl text-gray-800 hover:bg-gray-50 transition-all"
@@ -63,7 +80,6 @@ const Services = () => {
                 </span>
               </button>
 
-              {/* अगर सेक्शन खुला है तभी नीचे का कंटेंट दिखेगा */}
               {openSection === item.id && (
                 <div className="p-6 border-t border-gray-100 bg-white text-gray-700 space-y-3 animate-fadeIn">
                   <p><span className="font-bold text-green-600">Description:</span> {item.desc}</p>
