@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Smooth Scroll for the whole page */
+html {
+  scroll-behavior: smooth;
+}
+
 /* 1. Global Background */
 body {
   background-color: #0A1F44;
@@ -9,7 +14,7 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* 2. Industrial Neon Button (जो आपने मांगा था) */
+/* 2. Industrial Neon Button */
 .btn-industrial {
   @apply bg-[#00FF88] text-[#0A1F44] px-10 py-4 rounded-full font-black uppercase tracking-tighter transition-all;
   box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
@@ -19,7 +24,7 @@ body {
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
 }
 
-/* 3. Glassmorphism Card (कांच जैसा लुक) */
+/* 3. Glassmorphism Card */
 .glass-card {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
@@ -32,7 +37,7 @@ body {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* 4. Image Placeholder (फोटो न होने पर एनिमेटेड बॉक्स) */
+/* 4. Image Placeholder */
 .img-placeholder {
   background: linear-gradient(90deg, #112240 25%, #1d3557 50%, #112240 75%);
   background-size: 200% 100%;
@@ -43,4 +48,13 @@ body {
 @keyframes loading {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+/* 5. Fade In Animation for Description */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
 }
