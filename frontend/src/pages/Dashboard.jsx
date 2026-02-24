@@ -12,9 +12,11 @@ const Dashboard = () => {
     const fetchLeads = async () => {
       try {
         const data = await getLeads();
-        setLeads(data || []); // Safety check: if data is null, use empty array
+        // BUG FIX: Ensure we always have an array even if API fails or returns null
+        setLeads(Array.isArray(data) ? data : []); 
       } catch (err) {
-        console.error("Leads लोड नहीं हो पाईं");
+        console.error("Leads लोड नहीं हो पाईं", err);
+        setLeads([]); // Fallback to empty array on error
       } finally {
         setLoading(false);
       }
@@ -23,26 +25,30 @@ const Dashboard = () => {
   }, []);
 
   const downloadCSV = () => {
-    if (leads.length === 0) return alert("कोई डेटा उपलब्ध नहीं है!");
+    if (!leads || leads.length === 0) return alert("कोई डेटा उपलब्ध नहीं है!");
     const headers = "Name,Mobile,Email,Service,Status\n";
-    const csvData = leads.map(l => `${l.name},${l.mobile},${l.email},${l.serviceType},${l.status}`).join("\n");
+    // BUG FIX: Added optional chaining (?.) and fallbacks ('N/A') to prevent crash during mapping
+    const csvData = leads.map(l => 
+      `${l?.name || 'N/A'},${l?.mobile || 'N/A'},${l?.email || 'N/A'},${l?.serviceType || 'N/A'},${l?.status || 'New'}`
+    ).join("\n");
+    
     const blob = new Blob([headers + csvData], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = 'Duatech_Leads.csv';
     a.click();
+    window.URL.revokeObjectURL(url); // Memory clean up
   };
 
-  // Filter leads based on search
+  // BUG FIX: Added optional chaining (?.) and checks to prevent crash if data is undefined
   const filteredLeads = leads.filter(lead => 
-    lead.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    lead.mobile.includes(searchTerm)
+    lead?.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    lead?.mobile?.includes(searchTerm)
   );
 
   return (
     <div className="p-8 bg-[#0A1F44] min-h-screen text-white pt-24">
-      {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
         <div>
           <h1 className="text-4xl font-black text-[#00FF88] tracking-widest uppercase mb-2">Lead Control Room</h1>
@@ -55,7 +61,7 @@ const Dashboard = () => {
             <input 
               type="text" 
               placeholder="Search leads..." 
-              className="bg-white/5 border border-white/10 rounded-full pl-10 pr-4 py-2 focus:outline-none focus:border-[#00FF88] transition-all w-64"
+              className="bg-white/5 border border-white/10 rounded-full pl-10 pr-4 py-2 focus:outline-none focus:border-[#00FF88] transition-all w-64 text-white"
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
@@ -65,9 +71,8 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <div className="glass-card p-6 border-l-4 border-[#00FF88]">
+        <div className="glass-card p-6 border-l-4 border-[#00FF88] bg-white/5 rounded-xl">
           <div className="flex justify-between items-center">
             <div>
               <p className="text-gray-400 text-xs uppercase font-bold mb-1">Total Leads</p>
@@ -76,27 +81,26 @@ const Dashboard = () => {
             <Users className="text-[#00FF88]" size={32} />
           </div>
         </div>
-        <div className="glass-card p-6 border-l-4 border-yellow-500">
+        <div className="glass-card p-6 border-l-4 border-yellow-500 bg-white/5 rounded-xl">
           <div className="flex justify-between items-center">
             <div>
               <p className="text-gray-400 text-xs uppercase font-bold mb-1">New/Pending</p>
-              <h3 className="text-3xl font-black">{leads.filter(l => l.status === 'New').length}</h3>
+              <h3 className="text-3xl font-black">{leads.filter(l => l?.status === 'New' || !l?.status).length}</h3>
             </div>
             <Clock className="text-yellow-500" size={32} />
           </div>
         </div>
-        <div className="glass-card p-6 border-l-4 border-blue-500">
+        <div className="glass-card p-6 border-l-4 border-blue-500 bg-white/5 rounded-xl">
           <div className="flex justify-between items-center">
             <div>
               <p className="text-gray-400 text-xs uppercase font-bold mb-1">Contacted</p>
-              <h3 className="text-3xl font-black">{leads.filter(l => l.status === 'Contacted').length}</h3>
+              <h3 className="text-3xl font-black">{leads.filter(l => l?.status === 'Contacted').length}</h3>
             </div>
             <CheckCircle className="text-blue-500" size={32} />
           </div>
         </div>
       </div>
 
-      {/* Leads Table Container */}
       <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-md">
         {loading ? (
           <div className="p-20 text-center text-[#00FF88] animate-pulse font-bold tracking-widest">CONNECTING TO SERVER...</div>
@@ -120,27 +124,27 @@ const Dashboard = () => {
                   <motion.tr 
                     initial={{ opacity: 0 }} 
                     animate={{ opacity: 1 }} 
-                    key={lead._id} 
+                    key={lead?._id || Math.random()} 
                     className="hover:bg-white/5 transition-all"
                   >
                     <td className="p-5">
-                      <p className="font-black text-white uppercase tracking-tight">{lead.name}</p>
-                      <p className="text-[10px] text-gray-500">ID: {lead._id.slice(-6)}</p>
+                      <p className="font-black text-white uppercase tracking-tight">{lead?.name || 'Unknown'}</p>
+                      <p className="text-[10px] text-gray-500 uppercase tracking-widest">ID: {lead?._id ? lead._id.slice(-6) : 'N/A'}</p>
                     </td>
                     <td className="p-5">
-                      <div className="text-sm font-medium text-gray-300">{lead.mobile}</div>
-                      <div className="text-xs text-gray-500 lowercase">{lead.email}</div>
+                      <div className="text-sm font-medium text-gray-300">{lead?.mobile || 'No Mobile'}</div>
+                      <div className="text-xs text-gray-500 lowercase">{lead?.email || 'No Email'}</div>
                     </td>
                     <td className="p-5">
-                      <span className="bg-white/5 border border-white/10 px-3 py-1 rounded text-[10px] font-bold text-blue-400">
-                        {lead.serviceType}
+                      <span className="bg-white/5 border border-white/10 px-3 py-1 rounded text-[10px] font-bold text-blue-400 uppercase tracking-wider">
+                        {lead?.serviceType || 'Not Specified'}
                       </span>
                     </td>
                     <td className="p-5 text-center">
-                      <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase ${
-                        lead.status === 'New' ? 'bg-[#00FF88]/20 text-[#00FF88] border border-[#00FF88]/30' : 'bg-gray-500/20 text-gray-400'
+                      <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                        lead?.status === 'New' || !lead?.status ? 'bg-[#00FF88]/20 text-[#00FF88] border border-[#00FF88]/30' : 'bg-gray-500/20 text-gray-400'
                       }`}>
-                        {lead.status || 'New'}
+                        {lead?.status || 'New'}
                       </span>
                     </td>
                   </motion.tr>
