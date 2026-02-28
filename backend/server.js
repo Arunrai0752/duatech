@@ -1,74 +1,34 @@
-import express from "express";
+import express  from "express"
 import mongoose from "mongoose";
 import cors from "cors";
-import dotenv from "dotenv";
+import dotenv from "dotenv"
+import connectDB from "./src/DB/mongo.js"
+import newrouter from "./src/Routes/routes.newform.js";
+import servicerouter from "./src/Routes/routes.serviceform.js";
 
-// Load environment variables (Security ke liye)
+
+// .env file load karo
 dotenv.config();
 
 const app = express();
 
-// Middlewares
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// ------------------ DATABASE CONNECTION ------------------ //
-// Isko env file mein rakhna best hai, par filhal fix kar diya hai
-const MONGO_URL = process.env.MONGO_URI || "mongodb+srv://CERGIBWALE_DB_USER:VtdYMmaN9Cd0ZFni@cluster0.ogg6awx.mongodb.net/Duvatech_solar_leads?retryWrites=true&w=majority";
-
-mongoose
-  .connect(MONGO_URL)
-  .then(() => console.log("🔥 MongoDB Connected Successfully"))
-  .catch((err) => console.error("❌ DB Connection Error:", err.message));
-
-// --------------------- SCHEMA --------------------- //
-const leadSchema = new mongoose.Schema(
-  {
-    type: { type: String, required: true }, // 'new' or 'service'
-    name: { type: String, required: true },
-    phone: { type: String, required: true },
-    city: String,
-    pincode: String,
-    billAmount: String,
-    consumerNumber: String,
-    capacity: String,
-    address: String,
-  },
-  { timestamps: true }
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true
+  })
 );
+app.use(express.json());   
 
-const Lead = mongoose.model("Lead", leadSchema);
 
-// --------------------- ROUTES ---------------------- //
+app.use("/api/new" ,newrouter)
+app.use("/api/old" , servicerouter)
 
-// Health Check Route (Render check karne ke liye ki server up hai)
-app.get("/", (req, res) => res.send("Solar Server is Running..."));
 
-// Route for New Connections
-app.post("/new-connection", async (req, res) => {
-  try {
-    const newLead = new Lead({ ...req.body, type: "new" });
-    await newLead.save();
-    res.status(201).json({ success: true, message: "New Solar Lead Saved!" });
-  } catch (err) {
-    res.status(400).json({ success: false, error: err.message });
-  }
+// ── Server Start
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  connectDB()
 });
-
-// Route for Service Requests
-app.post("/service-request", async (req, res) => {
-  try {
-    const serviceLead = new Lead({ ...req.body, type: "service" });
-    await serviceLead.save();
-    res.status(201).json({ success: true, message: "Service Lead Saved!" });
-  } catch (err) {
-    res.status(400).json({ success: false, error: err.message });
-  }
-});
-
-// -------------------- SERVER LISTEN ---------------------- //
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () =>
-  console.log(`🚀 Server running on port ${PORT}`)
-);

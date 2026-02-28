@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { getLeads } from '../api/leadApi';
 import { Download, Users, Clock, CheckCircle, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -11,7 +10,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchLeads = async () => {
       try {
-        const data = await getLeads();
+        // const data = await getLeads();
         // BUG FIX: Ensure we always have an array even if API fails or returns null
         setLeads(Array.isArray(data) ? data : []); 
       } catch (err) {

@@ -1,119 +1,306 @@
 import { useState } from "react";
-import { submitLead } from "../api/leadApi"; // leadApi ko connect kiya
+import { motion, AnimatePresence } from "framer-motion";
+import { User, Phone, MapPin, Hash, Zap, Send, CheckCircle } from "lucide-react";
+import { API } from "../api/Api";
+
+const inputBase =
+  "w-full rounded-xl px-4 py-3 text-cloud-white placeholder-cloud-gray/50 " +
+  "bg-cloud-white/10 border border-solar-panel/20 outline-none " + // Increased opacity from 5 to 10
+  "focus:border-sun-primary/60 focus:bg-cloud-white/20 transition-all duration-300 text-sm " + // Increased focus opacity
+  "autofill:bg-cloud-white/20 autofill:text-cloud-white"; // Added autofill styles
+
+const FieldWrapper = ({ icon: Icon, children }) => (
+  <div className="relative">
+    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sun-primary/60 pointer-events-none z-10">
+      <Icon size={15} />
+    </span>
+    <div className="[&>input]:pl-9 [&>textarea]:pl-9 [&>select]:pl-9">{children}</div>
+  </div>
+);
+
+const formVariants = {
+  enter: (dir) => ({ opacity: 0, x: dir > 0 ? 60 : -60, scale: 0.97 }),
+  center: { opacity: 1, x: 0, scale: 1 },
+  exit: (dir) => ({ opacity: 0, x: dir > 0 ? -60 : 60, scale: 0.97 }),
+};
 
 export default function LeadForm() {
-  const [type, setType] = useState("");
+  const [type, setType] = useState(""); // "new" | "service"
+  const [direction, setDirection] = useState(1);
   const [formData, setFormData] = useState({});
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(""); // "" | "sending" | "success" | "error"
 
-  const inputStyle = {
-    color: 'white', 
-    backgroundColor: 'rgba(255, 255, 255, 0.1)', 
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    padding: '12px',
-    outline: 'none'
+  const selectType = (val) => {
+    setDirection(val === "new" ? 1 : -1);
+    setType(val);
+    setFormData({});
+    setStatus("");
   };
 
-  // Form input handle karne ke liye function
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value, inquiryType: type });
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+      inquiryType: type,
+    }));
   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Browser refresh rokne ke liye sabse zaroori
-    setStatus("Sending...");
-    
-    try {
-      // Ab ye seedha Render backend par jayega leadApi ke raste
-      await submitLead(formData); 
-      setStatus("Success! Your inquiry has been submitted.");
-      setFormData({}); // Form clear karein
-    } catch (err) {
-      console.error(err);
-      setStatus("Error: Could not connect to server. Try again.");
+  if (!type) return;
+
+  setStatus("sending");
+
+  try {
+    let response;
+
+    if (type === "new") {
+      response = await API.post("/new/connection", {
+        fullName: formData.fullName,
+        phoneNumber: formData.phoneNumber,
+        city: formData.city,
+        pincode: formData.pincode,
+        fullAddress: formData.fullAddress,
+      });
+    } else {
+      response = await API.post("/old/service", {
+        fullName: formData.fullName,
+        phoneNumber: formData.phoneNumber,
+        plantCapacity: formData.plantCapacity,
+      });
     }
-  };
+
+    console.log("✅ Server Response:", response.data);
+
+    setStatus("success");
+    setFormData({});
+
+  } catch (err) {
+    console.error("❌ Submit error:", err.response?.data || err.message);
+    setStatus("error");
+  }
+};
 
   return (
-    <div className="px-6 py-10 max-w-lg mx-auto bg-[#0A1F44] shadow-2xl rounded-2xl mt-6 border border-[#00FF88]/20">
-      <h2 className="text-3xl font-bold mb-6 text-center text-white">
-        Solar <span className="text-[#00FF88]">Inquiry Form</span>
-      </h2>
-
-      {/* SERVICE SELECTION BUTTONS */}
-      <div className="flex justify-between mb-6">
-        <button
-          type="button"
-          className={`w-1/2 p-3 mr-2 rounded font-bold transition-all ${
-            type === "new" ? "bg-[#00FF88] text-[#0A1F44]" : "bg-gray-700 text-white"
-          }`}
-          onClick={() => setType("new")}
-        >
-          New Connection
-        </button>
-
-        <button
-          type="button"
-          className={`w-1/2 p-3 ml-2 rounded font-bold transition-all ${
-            type === "Service" ? "bg-[#00FF88] text-[#0A1F44]" : "bg-gray-700 text-white"
-          }`}
-          onClick={() => setType("Service")}
-        >
-          Service Only
-        </button>
+    <div className="min-h-screen bg-sky-deep flex items-center justify-center px-6 py-16">
+      {/* Glow bg */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-solar-panel rounded-full blur-[160px] opacity-10" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] bg-sun-primary rounded-full blur-[160px] opacity-10" />
       </div>
 
-      {type && (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="name"
-            required
-            placeholder="Full Name"
-            onChange={handleChange}
-            style={inputStyle}
-            className="w-full rounded"
-          />
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="relative z-10 w-full max-w-lg"
+      >
+        {/* Card */}
+        <div className="bg-sky-deep/80 border border-solar-panel/20 rounded-2xl shadow-2xl backdrop-blur-sm overflow-hidden">
 
-          <input
-            type="tel"
-            name="mobile"
-            required
-            maxLength="10"
-            placeholder="Phone Number"
-            onChange={handleChange}
-            style={inputStyle}
-            className="w-full rounded"
-          />
+          {/* Header */}
+          <div className="bg-gradient-sunrise px-8 py-6 text-center">
+            <p className="text-sky-deep/70 text-xs font-black uppercase tracking-[0.3em]">Duva Tech</p>
+            <h2 className="text-2xl font-black text-sky-deep uppercase tracking-tight mt-1">
+              Solar Inquiry Form
+            </h2>
+          </div>
 
-          {type === "new" ? (
-            <>
-              <input type="text" name="city" required placeholder="City" onChange={handleChange} style={inputStyle} className="w-full rounded" />
-              <input type="number" name="pincode" required placeholder="Pincode" onChange={handleChange} style={inputStyle} className="w-full rounded" />
-              <input type="text" name="serviceType" defaultValue="New Solar" hidden />
-            </>
-          ) : (
-            <input type="text" name="serviceType" required placeholder="Plant Capacity (kW)" onChange={handleChange} style={inputStyle} className="w-full rounded" />
-          )}
+          <div className="px-8 py-8">
+            {/* Toggle Buttons */}
+            <div className="flex gap-3 mb-8">
+              {[
+                { val: "new", label: "New Connection" },
+                { val: "service", label: "Service Only" },
+              ].map(({ val, label }) => (
+                <button
+                  key={val}
+                  type="button"
+                  onClick={() => selectType(val)}
+                  className={`flex-1 py-3 rounded-xl font-black text-sm uppercase tracking-wider transition-all duration-300 ${type === val
+                      ? "bg-sun-primary text-sky-deep shadow-[0_0_16px_rgba(255,179,71,0.4)]"
+                      : "bg-cloud-white/5 text-cloud-gray border border-solar-panel/20 hover:border-sun-primary/40 hover:text-cloud-white"
+                    }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
 
-          <textarea
-            name="address"
-            required
-            placeholder="Full Address"
-            onChange={handleChange}
-            style={inputStyle}
-            className="w-full rounded"
-          ></textarea>
+            {/* No type selected */}
+            <AnimatePresence mode="wait">
+              {!type && (
+                <motion.p
+                  key="placeholder"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="text-cloud-gray/50 text-center text-sm py-6"
+                >
+                  Please select an option above to continue.
+                </motion.p>
+              )}
+            </AnimatePresence>
 
-          <button type="submit" className="w-full bg-[#00FF88] text-[#0A1F44] p-3 rounded text-lg font-black hover:bg-[#00e67a] transition-colors uppercase">
-            Submit Request
-          </button>
-          
-          {status && <p className="text-center mt-4 font-bold text-[#00FF88]">{status}</p>}
-        </form>
-      )}
-      
-      {!type && <p className="text-gray-400 text-center">Please select an option above to continue.</p>}
+            {/* Form with swap animation */}
+            <AnimatePresence mode="wait" custom={direction}>
+              {type && (
+                <motion.form
+                  key={type}
+                  custom={direction}
+                  variants={formVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  onSubmit={handleSubmit}
+                  className="space-y-4"
+                >
+                  {/* Full Name */}
+                  <FieldWrapper icon={User}>
+                    <input
+                      type="text"
+                      name="fullName"
+                      required
+                      placeholder="Full Name"
+                      value={formData.fullName || ""}
+                      onChange={handleChange}
+                      className={inputBase}
+                      style={{ color: 'black' }} // Ensure text is white
+                    />
+                  </FieldWrapper>
+
+                  {/* Phone */}
+                  <FieldWrapper icon={Phone}>
+                    <input
+                      type="tel"
+                      name="phoneNumber"
+                      required
+                      maxLength="10"
+                      placeholder="Phone Number"
+                      value={formData.phoneNumber || ""}
+                      onChange={handleChange}
+                      className={inputBase}
+                      style={{ color: 'black' }}
+                    />
+                  </FieldWrapper>
+
+                  {/* Conditional fields */}
+                  {type === "new" ? (
+                    <>
+                      <FieldWrapper icon={MapPin}>
+                        <input
+                          type="text"
+                          name="city"
+                          required
+                          placeholder="City"
+                          value={formData.city || ""}
+                          onChange={handleChange}
+                          className={inputBase}
+                          style={{ color: 'black' }}
+                        />
+                      </FieldWrapper>
+
+                      <FieldWrapper icon={Hash}>
+                        <input
+                          type="number"
+                          name="pincode"
+                          required
+                          placeholder="Pincode"
+                          value={formData.pincode || ""}
+                          onChange={handleChange}
+                          className={inputBase}
+                          style={{ color: 'black' }}
+                        />
+                      </FieldWrapper>
+                    </>
+                  ) : (
+                    <FieldWrapper icon={Zap}>
+                      <input
+                        type="text"
+                        name="plantCapacity"
+                        required
+                        placeholder="Plant Capacity (kW)"
+                        value={formData.plantCapacity || ""}
+                        onChange={handleChange}
+                        className={inputBase}
+                        style={{ color: 'black' }}
+                      />
+                    </FieldWrapper>
+                  )}
+
+                  {/* Address */}
+                  <FieldWrapper icon={MapPin}>
+                    <textarea
+                      name="fullAddress"
+                      required
+                      rows={3}
+                      placeholder="Full Address"
+                      value={formData.fullAddress || ""}
+                      onChange={handleChange}
+                      className={`${inputBase} resize-none`}
+                      style={{ color: 'black' }}
+                    />
+                  </FieldWrapper>
+
+                  {/* Submit Button */}
+                  <motion.button
+                    type="submit"
+                    disabled={status === "sending" || status === "success"}
+                    whileTap={{ scale: 0.97 }}
+                    className={`w-full py-4 rounded-xl font-black uppercase tracking-widest text-sm 
+                      flex items-center justify-center gap-2 transition-all duration-300
+                      ${status === "success"
+                        ? "bg-solar-panel text-cloud-white"
+                        : "bg-sun-primary text-sky-deep hover:bg-sun-secondary shadow-[0_0_20px_rgba(255,179,71,0.3)]"
+                      }`}
+                  >
+                    {status === "sending" && (
+                      <motion.span
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                        className="w-4 h-4 border-2 border-sky-deep/30 border-t-sky-deep rounded-full inline-block"
+                      />
+                    )}
+                    {status === "success" && <CheckCircle size={16} />}
+                    {status === "sending" && "Sending..."}
+                    {status === "success" && "Submitted!"}
+                    {(status === "" || status === "error") && (
+                      <>
+                        <Send size={15} /> Submit Request
+                      </>
+                    )}
+                  </motion.button>
+
+                  {/* Status messages */}
+                  <AnimatePresence>
+                    {status === "error" && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        className="text-center text-sm text-red-400 font-bold"
+                      >
+                        ❌ Could not connect to server. Try again.
+                      </motion.p>
+                    )}
+                    {status === "success" && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        className="text-center text-sm text-solar-panel-light font-bold"
+                      >
+                        ✅ Your inquiry has been submitted successfully!
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </motion.form>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }

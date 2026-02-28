@@ -1,0 +1,61 @@
+# =========================
+# 🔹 Node.js / Express
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+logs
+*.log
+
+# Runtime files
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# =========================
+# 🔹 React / Frontend
+# =========================
+build/
+dist/
+.cache/
+.vite/
+.next/
+out/
+
+# Coverage reports
+coverage/
+
+# =========================
+# 🔹 IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# =========================
+# 🔹 Testing
+# =========================
+jest.config.js
+*.test.js.snap
+
+# =========================
+# 🔹 Misc
+# =========================
+*.local

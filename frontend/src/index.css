@@ -2,59 +2,108 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Smooth Scroll for the whole page */
+/* Solar Panel Theme Variables */
+:root {
+  --sun-primary: #FFB347;      /* Surya ka golden orange */
+  --sun-secondary: #FFD93D;     /* Surya ki roshni - yellow */
+  --sky-deep: #0B3D5F;          /* Geela aasman - dark blue */
+  --sky-light: #4A9FF5;         /* Halka aasman - day sky */
+  --solar-panel: #2E8B57;       /* Solar panel green */
+  --solar-panel-light: #98FB98;  /* Halka solar panel green */
+  --cloud-white: #FFFFFF;        /* Baadal safed */
+  --cloud-gray: #E0E0E0;         /* Halka saaya */
+  
+  /* Semantic variables */
+  --primary: var(--sun-primary);
+  --secondary: var(--sun-secondary);
+  --accent: var(--solar-panel);
+  --background: var(--sky-deep);
+  --text-light: var(--cloud-white);
+  --text-dim: var(--cloud-gray);
+}
+
+/* 🎨 COLOR CONTROL CLASSES - Sirf colors control karenge */
+
+/* Background Colors */
+.bg-sun-primary { background-color: var(--sun-primary); }
+.bg-sun-secondary { background-color: var(--sun-secondary); }
+.bg-sky-deep { background-color: var(--sky-deep); }
+.bg-sky-light { background-color: var(--sky-light); }
+.bg-solar-panel { background-color: var(--solar-panel); }
+.bg-solar-panel-light { background-color: var(--solar-panel-light); }
+.bg-cloud-white { background-color: var(--cloud-white); }
+.bg-cloud-gray { background-color: var(--cloud-gray); }
+
+/* Text Colors */
+.text-sun-primary { color: var(--sun-primary); }
+.text-sun-secondary { color: var(--sun-secondary); }
+.text-sky-deep { color: var(--sky-deep); }
+.text-sky-light { color: var(--sky-light); }
+.text-solar-panel { color: var(--solar-panel); }
+.text-solar-panel-light { color: var(--solar-panel-light); }
+.text-cloud-white { color: var(--cloud-white); }
+.text-cloud-gray { color: var(--cloud-gray); }
+
+/* Border Colors */
+.border-sun-primary { border-color: var(--sun-primary); }
+.border-sun-secondary { border-color: var(--sun-secondary); }
+.border-sky-deep { border-color: var(--sky-deep); }
+.border-sky-light { border-color: var(--sky-light); }
+.border-solar-panel { border-color: var(--solar-panel); }
+.border-solar-panel-light { border-color: var(--solar-panel-light); }
+
+/* Ring Colors (for focus states) */
+.ring-sun-primary { --tw-ring-color: var(--sun-primary); }
+.ring-solar-panel { --tw-ring-color: var(--solar-panel); }
+
+/* Gradient Backgrounds */
+.bg-gradient-sunrise {
+  background: linear-gradient(135deg, var(--sky-deep), var(--sun-primary), var(--sun-secondary));
+}
+.bg-gradient-solar {
+  background: linear-gradient(90deg, var(--solar-panel), var(--solar-panel-light));
+}
+.bg-gradient-sky {
+  background: linear-gradient(180deg, var(--sky-light), var(--sky-deep));
+}
+
+/* Fill Colors (for SVGs) */
+.fill-sun-primary { fill: var(--sun-primary); }
+.fill-sun-secondary { fill: var(--sun-secondary); }
+.fill-solar-panel { fill: var(--solar-panel); }
+.fill-sky-light { fill: var(--sky-light); }
+
+/* Hover States */
+.hover\:bg-sun-primary:hover { background-color: var(--sun-primary); }
+.hover\:bg-solar-panel:hover { background-color: var(--solar-panel); }
+.hover\:text-sun-secondary:hover { color: var(--sun-secondary); }
+.hover\:border-solar-panel-light:hover { border-color: var(--solar-panel-light); }
+
+/* Custom Animations */
+@keyframes sunGlow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+.animate-sun-glow {
+  animation: sunGlow 3s ease-in-out infinite;
+}
+
+@keyframes skyMove {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+/* Base styles */
 html {
   scroll-behavior: smooth;
 }
 
-/* 1. Global Background */
 body {
-  background-color: #0A1F44;
-  color: white;
   font-family: 'Inter', sans-serif;
 }
+/* ✅ ServiceCard — sirf yahi rotate hoga */
+.service-flip-card:hover .service-flip-inner { transform: rotateY(180deg); }
 
-/* 2. Industrial Neon Button */
-.btn-industrial {
-  @apply bg-[#00FF88] text-[#0A1F44] px-10 py-4 rounded-full font-black uppercase tracking-tighter transition-all;
-  box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
-}
-.btn-industrial:hover {
-  @apply bg-white scale-105;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
-}
+/* ✅ ProductCard — sirf yahi rotate hoga */
+.product-flip-card:hover .product-flip-inner { transform: rotateY(180deg); }
 
-/* 3. Glassmorphism Card */
-.glass-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  transition: all 0.3s ease;
-}
-.glass-card:hover {
-  border-color: #00FF88;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-/* 4. Image Placeholder */
-.img-placeholder {
-  background: linear-gradient(90deg, #112240 25%, #1d3557 50%, #112240 75%);
-  background-size: 200% 100%;
-  animation: loading 2s infinite;
-  @apply flex items-center justify-center text-white/10 font-bold italic border border-white/5;
-}
-
-@keyframes loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* 5. Fade In Animation for Description */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-fadeIn {
-  animation: fadeIn 0.4s ease-out forwards;
-}
